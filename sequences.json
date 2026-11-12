@@ -1,0 +1,54 @@
+[
+  {
+    "sequence_id": "seq_001",
+    "sequence_type": "Isolated Anomaly",
+    "start_time": "2026-09-24T14:09:32.282571",
+    "end_time": "2026-09-24T14:09:32.884499",
+    "event_count": 2,
+    "entities_involved": [
+      "192.168.0.102",
+      "52.107.236.192",
+      "57.144.243.32"
+    ],
+    "stages_observed": [
+      "Exfiltration",
+      "Suspicious Activity"
+    ],
+    "attack_patterns": [
+      "Possible Data Exfiltration"
+    ],
+    "detection_reasons": [
+      "Total outbound data reached 360175 bytes."
+    ],
+    "attack_types": [
+      "Possible Data Exfiltration"
+    ],
+    "attack_evidence": [
+      "360,175 outbound bytes observed",
+      "Outbound activity lasted about 112.2 seconds"
+    ],
+    "attack_confidence": 0.55,
+    "avg_anomaly_score": 0.8254,
+    "_ground_truth_campaign": null,
+    "timeline": [
+      {
+        "timestamp": "2026-09-24T14:09:32.282571",
+        "src_ip": "192.168.0.102",
+        "dst_ip": "52.107.236.192",
+        "dst_port": 443,
+        "stage": "Exfiltration"
+      },
+      {
+        "timestamp": "2026-09-24T14:09:32.884499",
+        "src_ip": "192.168.0.102",
+        "dst_ip": "57.144.243.32",
+        "dst_port": 5222,
+        "stage": "Suspicious Activity"
+      }
+    ],
+    "risk_score": 32.5,
+    "risk_level": "Medium",
+    "progression_likelihood": "low \u2014 isolated anomaly; insufficient evidence for an attack sequence",
+    "explanation": "2 anomalous event(s) involving 3 host(s). This activity does not contain enough correlated events to be treated as a complete attack sequence."
+  }
+]

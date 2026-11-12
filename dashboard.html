@@ -1,0 +1,778 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>AttackFlow AI</title>
+
+
+<style>
+
+/* -------------------------------------------------------
+   Global
+------------------------------------------------------- */
+
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+
+    margin: 0;
+
+    background: #0b0e12;
+
+    color: #e3e7ed;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+}
+
+
+.container {
+
+    width:
+        min(
+            1000px,
+            calc(100% - 32px)
+        );
+
+    margin: auto;
+}
+
+
+/* -------------------------------------------------------
+   Header
+------------------------------------------------------- */
+
+header {
+
+    padding:
+        34px
+        0
+        24px;
+
+    border-bottom:
+        1px solid
+        #252b34;
+}
+
+
+h1 {
+
+    margin: 0;
+
+    font-size: 28px;
+}
+
+
+.subtitle {
+
+    color: #8992a0;
+
+    margin-top: 6px;
+
+    font-size: 14px;
+}
+
+
+/* -------------------------------------------------------
+   Stats
+------------------------------------------------------- */
+
+.stats {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            5,
+            1fr
+        );
+
+    gap: 12px;
+
+    padding:
+        22px
+        0;
+}
+
+
+.stat {
+
+    background: #12161c;
+
+    border:
+        1px solid
+        #252b34;
+
+    border-radius: 9px;
+
+    padding: 16px;
+}
+
+
+.stat b {
+
+    display: block;
+
+    font-size: 24px;
+
+    font-family:
+        Consolas,
+        monospace;
+}
+
+
+.stat span {
+
+    color: #8992a0;
+
+    font-size: 11px;
+}
+
+
+/* -------------------------------------------------------
+   Section headings
+------------------------------------------------------- */
+
+.section-title {
+
+    margin:
+        18px
+        0
+        12px;
+
+    font-size: 13px;
+
+    color: #8992a0;
+
+    text-transform: uppercase;
+
+    letter-spacing: .08em;
+}
+
+
+/* -------------------------------------------------------
+   Attack cards
+------------------------------------------------------- */
+
+.attack-card,
+.detail-card {
+
+    background: #12161c;
+
+    border:
+        1px solid
+        #252b34;
+
+    border-left:
+        3px solid
+        var(--level);
+
+    border-radius: 9px;
+
+    margin-bottom: 12px;
+}
+
+
+.attack-card {
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items: center;
+
+    padding:
+        17px
+        18px;
+}
+
+
+.seq-id {
+
+    color: #8992a0;
+
+    font:
+        11px
+        Consolas,
+        monospace;
+}
+
+
+.flow {
+
+    margin-top: 4px;
+
+    font-weight: 650;
+
+    font-size: 14px;
+}
+
+
+.meta {
+
+    margin-top: 5px;
+
+    color: #8992a0;
+
+    font-size: 11px;
+}
+
+
+.risk {
+
+    text-align: right;
+
+    color: var(--level);
+
+    font:
+        11px
+        Consolas,
+        monospace;
+
+    white-space: nowrap;
+}
+
+
+.risk b {
+
+    font-size: 16px;
+}
+
+
+/* -------------------------------------------------------
+   Detailed cards
+------------------------------------------------------- */
+
+.detail-card summary {
+
+    cursor: pointer;
+
+    list-style: none;
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    gap: 15px;
+
+    padding:
+        17px
+        18px;
+}
+
+
+.detail-card summary::-webkit-details-marker {
+
+    display: none;
+}
+
+
+.details-body {
+
+    border-top:
+        1px solid
+        #252b34;
+
+    padding: 18px;
+}
+
+
+.explanation {
+
+    background: #171c24;
+
+    border:
+        1px solid
+        #252b34;
+
+    border-radius: 7px;
+
+    padding: 13px;
+
+    font-size: 13px;
+}
+
+
+.progression {
+
+    color: #8992a0;
+
+    margin:
+        14px
+        0;
+
+    font-size: 12px;
+}
+
+
+.progression b {
+
+    color: #ff9f43;
+}
+
+
+h3 {
+
+    color: #8992a0;
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    letter-spacing: .06em;
+
+    margin-top: 20px;
+}
+
+
+/* -------------------------------------------------------
+   Timeline
+------------------------------------------------------- */
+
+.timeline-row {
+
+    display: grid;
+
+    grid-template-columns:
+        90px
+        1fr;
+
+    gap: 14px;
+
+    padding: 9px 0;
+
+    border-bottom:
+        1px solid
+        #1e242d;
+
+    font-size: 12px;
+}
+
+
+.time,
+.route,
+.muted {
+
+    color: #8992a0;
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size: 11px;
+}
+
+
+/* -------------------------------------------------------
+   Entities
+------------------------------------------------------- */
+
+.entities span {
+
+    display: inline-block;
+
+    background: #171c24;
+
+    border:
+        1px solid
+        #252b34;
+
+    border-radius: 4px;
+
+    padding:
+        4px
+        7px;
+
+    margin: 3px;
+
+    font:
+        11px
+        Consolas,
+        monospace;
+}
+
+
+/* -------------------------------------------------------
+   Isolated anomalies
+------------------------------------------------------- */
+
+.anomaly-section {
+
+    margin-top: 28px;
+
+    margin-bottom: 35px;
+}
+
+
+.anomaly-note {
+
+    color: #8992a0;
+
+    font-size: 12px;
+
+    margin-bottom: 12px;
+
+    line-height: 1.5;
+}
+
+
+.anomaly-card {
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items: center;
+
+    background: #10141a;
+
+    border:
+        1px solid
+        #202630;
+
+    border-left:
+        2px solid
+        var(--level);
+
+    border-radius: 7px;
+
+    padding:
+        12px
+        15px;
+
+    margin-bottom: 7px;
+}
+
+
+.anomaly-stage {
+
+    color: #c8ced7;
+
+    font-size: 12px;
+
+    margin-top: 3px;
+}
+
+
+/* -------------------------------------------------------
+   Footer
+------------------------------------------------------- */
+
+footer {
+
+    color: #606a78;
+
+    text-align: center;
+
+    font-size: 11px;
+
+    padding:
+        20px
+        0
+        40px;
+}
+
+
+/* -------------------------------------------------------
+   Mobile
+------------------------------------------------------- */
+
+@media (max-width: 700px) {
+
+    .stats {
+
+        grid-template-columns:
+            repeat(
+                2,
+                1fr
+            );
+    }
+
+    .flow {
+
+        font-size: 12px;
+    }
+}
+
+
+@media (max-width: 480px) {
+
+    .stats {
+
+        grid-template-columns:
+            1fr
+            1fr;
+    }
+
+    .attack-card,
+    .anomaly-card {
+
+        gap: 10px;
+    }
+
+    .timeline-row {
+
+        grid-template-columns:
+            70px
+            1fr;
+    }
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<!-- =====================================================
+     Header
+===================================================== -->
+
+<header>
+
+    <h1>
+        AttackFlow AI
+    </h1>
+
+    <div class="subtitle">
+
+        Automated attack-sequence reconstruction,
+        anomaly detection and risk analysis.
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     Statistics
+===================================================== -->
+
+<section class="stats">
+
+
+    <div class="stat">
+
+        <b>
+            0
+        </b>
+
+        <span>
+            ATTACK SEQUENCES
+        </span>
+
+    </div>
+
+
+    <div class="stat">
+
+        <b>
+            1
+        </b>
+
+        <span>
+            ISOLATED ANOMALIES
+        </span>
+
+    </div>
+
+
+    <div class="stat">
+
+        <b>
+            2
+        </b>
+
+        <span>
+            ANOMALOUS EVENTS
+        </span>
+
+    </div>
+
+
+    <div class="stat">
+
+        <b>
+            0
+        </b>
+
+        <span>
+            CRITICAL
+        </span>
+
+    </div>
+
+
+    <div class="stat">
+
+        <b>
+            3
+        </b>
+
+        <span>
+            ENTITIES
+        </span>
+
+    </div>
+
+
+</section>
+
+
+<!-- =====================================================
+     Attack Sequences
+===================================================== -->
+
+<div class="section-title">
+
+    Detected Attack Sequences
+
+</div>
+
+
+
+    <div class="anomaly-note">
+        No multi-event attack sequences were detected.
+    </div>
+    
+
+
+<!-- =====================================================
+     Detailed Analysis
+===================================================== -->
+
+<div class="section-title">
+
+    Attack Investigation
+
+</div>
+
+
+
+    <div class="anomaly-note">
+        No attack sequences available for investigation.
+    </div>
+    
+
+
+<!-- =====================================================
+     Isolated Anomalies
+===================================================== -->
+
+<div class="anomaly-section">
+
+
+    <div class="section-title">
+
+        Isolated Anomalies
+
+    </div>
+
+
+    <div class="anomaly-note">
+
+        These events were flagged by the anomaly detector
+        but did not contain enough correlated activity to
+        be classified as complete attack sequences.
+
+    </div>
+
+
+    <details>
+
+        <summary
+            style="
+                cursor:pointer;
+                color:#8992a0;
+                font-size:12px;
+                margin-bottom:12px;
+            "
+        >
+
+            View 1 isolated anomalies
+
+        </summary>
+
+
+        
+    <div class="anomaly-card"
+         style="--level:#e8c547">
+
+        <div>
+
+            <div class="seq-id">
+                seq_001
+            </div>
+
+            <div class="anomaly-stage">
+                Exfiltration → Suspicious Activity
+            </div>
+
+            <div class="meta">
+                2 event · 14:09:32
+            </div>
+
+        </div>
+
+        <div class="risk">
+
+            Medium
+
+            <br>
+
+            <b>32.5</b>
+
+        </div>
+
+    </div>
+    
+
+
+    </details>
+
+
+</div>
+
+
+<!-- =====================================================
+     Footer
+===================================================== -->
+
+<footer>
+
+    AttackFlow AI ·
+    0 attack sequences ·
+    1 isolated anomalies
+
+</footer>
+
+
+</div>
+
+
+</body>
+
+</html>
